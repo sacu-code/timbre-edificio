@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Timbre del Edificio</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      color: #333;
+    }
+    .button {
+      display: block;
+      background-color: #25D366; /* Color WhatsApp */
+      color: white;
+      text-decoration: none;
+      padding: 15px;
+      margin: 10px auto;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 400px;
+      font-size: 18px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease;
+    }
+    .button:hover {
+      background-color: #1ebe5b;
+    }
+  </style>
+</head>
+<body>
+  <h1>🏢 Timbre del Edificio</h1>
+  <div id="buttons">
+    <p>Cargando departamentos...</p>
+  </div>
+
+  <script>
+    const sheetID = "1Nv2h4cniDmn7LRcovyyVNKSfjiEr9lX5OaqqHFq5za0"; // ID de tu Sheet solo lectura
+    const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
+
+    async function loadData() {
+      try {
+        const response = await fetch(sheetURL);
+        const text = await response.text();
+        const json = JSON.parse(text.substring(47).slice(0, -2));
+        const rows = json.table.rows;
+
+        const container = document.getElementById("buttons");
+        container.innerHTML = ""; // limpia el mensaje de "Cargando..."
+
+        rows.forEach(row => {
+          const piso = row.c[0]?.v || "";
+          const depto = row.c[1]?.v || "";
+          const celular = row.c[2]?.v || "";
+
+          if (celular) {
+            const whatsappLink = `https://wa.me/${celular}?text=Hola,%20estoy%20en%20la%20puerta%20del%20edificio.%20¿Podrías%20abrirme?`;
+            const button = document.createElement("a");
+            button.href = whatsappLink;
+            button.className = "button";
+            button.target = "_blank";
+            button.textContent = `Piso ${piso} - Depto ${depto}`;
+            container.appendChild(button);
+          }
+        });
+      } catch (error) {
+        console.error("Error al cargar los datos:", error);
+        document.getElementById("buttons").innerHTML =
+          "<p>Error al cargar los datos. Intenta más tarde.</p>";
+      }
+    }
+
+    loadData();
+  </script>
+</body>
+</html>
