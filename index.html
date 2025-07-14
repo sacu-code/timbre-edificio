@@ -4,79 +4,145 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Timbre del Edificio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f5f5f5;
+      font-family: 'Lato', sans-serif;
+      background-color: #ffffff;
+      color: #71777a;
       margin: 0;
       padding: 20px;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    header h1 {
+      font-size: 20px;
+      margin: 0;
+    }
+    header p {
+      font-size: 16px;
+      margin: 0;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 3fr;
+      gap: 10px;
+    }
+    .floor {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 2px solid #71777a;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      margin: 5px auto;
+      font-weight: bold;
+    }
+    .depto-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: start;
+      align-items: center;
+    }
+    .depto-btn {
+      background-color: #71777a;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      margin: 5px;
       text-align: center;
-    }
-    h1 {
-      color: #333;
-    }
-    .button {
-      display: block;
-      background-color: #25D366; /* Color WhatsApp */
-      color: white;
+      line-height: 50px;
+      font-size: 16px;
       text-decoration: none;
-      padding: 15px;
-      margin: 10px auto;
-      border-radius: 8px;
-      width: 90%;
-      max-width: 400px;
-      font-size: 18px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-      transition: background-color 0.3s ease;
+      transition: background 0.3s ease;
     }
-    .button:hover {
-      background-color: #1ebe5b;
+    .depto-btn:hover {
+      background-color: #5a5f62;
+    }
+    @media (max-width: 600px) {
+      .container {
+        grid-template-columns: 1fr 2fr;
+      }
+      .floor, .depto-btn {
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 14px;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>🏢 Timbre del Edificio</h1>
-  <div id="buttons">
-    <p>Cargando departamentos...</p>
+  <header>
+    <h1>Clickeá el depto<br>a comunicarte</h1>
+    <p>Av. Córdoba 5323</p>
+  </header>
+  <div id="timbre" class="container">
+    <p>Cargando datos...</p>
   </div>
 
   <script>
-    const sheetID = "1Nv2h4cniDmn7LRcovyyVNKSfjiEr9lX5OaqqHFq5za0"; // ID de tu Sheet solo lectura
+    const sheetID = "1Nv2h4cniDmn7LRcovyyVNKSfjiEr9lX5OaqqHFq5za0"; // ID de tu Sheet
     const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
 
-    async function loadData() {
+    async function cargarDatos() {
       try {
         const response = await fetch(sheetURL);
         const text = await response.text();
         const json = JSON.parse(text.substring(47).slice(0, -2));
         const rows = json.table.rows;
 
-        const container = document.getElementById("buttons");
-        container.innerHTML = ""; // limpia el mensaje de "Cargando..."
+        const pisos = {};
 
+        // Organizar datos por piso
         rows.forEach(row => {
-          const piso = row.c[0]?.v || "";
-          const depto = row.c[1]?.v || "";
-          const celular = row.c[2]?.v || "";
+          const piso = row.c[0]?.v || '';
+          const depto = row.c[1]?.v || '';
+          const celular = row.c[2]?.v || '';
 
-          if (celular) {
-            const whatsappLink = `https://wa.me/${celular}?text=Hola,%20estoy%20en%20la%20puerta%20del%20edificio.%20¿Podrías%20abrirme?`;
-            const button = document.createElement("a");
-            button.href = whatsappLink;
-            button.className = "button";
-            button.target = "_blank";
-            button.textContent = `Piso ${piso} - Depto ${depto}`;
-            container.appendChild(button);
+          if (piso && depto && celular) {
+            if (!pisos[piso]) pisos[piso] = [];
+            pisos[piso].push({ depto, celular });
           }
         });
-      } catch (error) {
-        console.error("Error al cargar los datos:", error);
-        document.getElementById("buttons").innerHTML =
-          "<p>Error al cargar los datos. Intenta más tarde.</p>";
+
+        const contenedor = document.getElementById('timbre');
+        contenedor.innerHTML = '';
+
+        for (const [piso, deptos] of Object.entries(pisos)) {
+          const pisoDiv = document.createElement('div');
+          pisoDiv.className = 'floor';
+          pisoDiv.textContent = piso;
+
+          const deptoContainer = document.createElement('div');
+          deptoContainer.className = 'depto-container';
+
+          deptos.forEach(({ depto, celular }) => {
+            const link = document.createElement('a');
+            link.className = 'depto-btn';
+            link.href = `https://wa.me/${celular}?text=${encodeURIComponent('*TIMBRE* 👋🏻🛎️%0AHola, estoy abajo soy __')}`;
+            link.target = '_blank';
+            link.textContent = depto;
+            deptoContainer.appendChild(link);
+          });
+
+          contenedor.appendChild(pisoDiv);
+          contenedor.appendChild(deptoContainer);
+        }
+      } catch (err) {
+        console.error('Error cargando datos', err);
+        document.getElementById('timbre').innerHTML = '<p>Error al cargar datos.</p>';
       }
     }
 
-    loadData();
+    cargarDatos();
   </script>
 </body>
 </html>
