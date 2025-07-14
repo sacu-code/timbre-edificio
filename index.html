@@ -5,28 +5,96 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Timbre del Edificio</title>
   <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      font-family: 'Lato', sans-serif;
+      background-color: #ffffff;
+      color: #71777a;
+      margin: 0;
+      padding: 20px;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    header h1 {
+      font-size: 20px;
+      margin: 0;
+      text-align: left;
+    }
+    header p {
+      font-size: 16px;
+      margin: 0;
+      text-align: right;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 10px;
+    }
+    .floor {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 2px solid #71777a;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      margin: 5px auto;
+      font-weight: bold;
+    }
+    .depto-container {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+    .depto-btn {
+      background-color: #71777a;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+    .depto-btn:hover {
+      background-color: #5a5f62;
+    }
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .container {
+        grid-template-columns: auto 1fr;
+      }
+      .floor, .depto-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 14px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="canvas">
-    <div class="header">
-      <div class="header-label">Clickeá el depto<br>a comunicarte</div>
-      <div class="header-address">Av. Córdoba 5323</div>
-    </div>
-
-    <div class="grid-header">
-      <div class="grid-title">piso</div>
-      <div class="grid-divider"></div>
-      <div class="grid-title">depto</div>
-    </div>
-
-    <div class="grid-container" id="timbre">
-      <p class="loading">Cargando datos...</p>
-    </div>
+  <header>
+    <h1>Clickeá el depto<br>a comunicarte</h1>
+    <p>Av. Córdoba 5323</p>
+  </header>
+  <div id="timbre" class="container">
+    <p>Cargando datos...</p>
   </div>
 
   <script>
-    const sheetID = "1Nv2h4cniDmn7LRcovyyVNKSfjiEr9lX5OaqqHFq5za0"; // ID de tu Sheet
+    const sheetID = "1Nv2h4cniDmn7LRcovyyVNKSfjiEr9lX5OaqqHFq5za0"; // ID de tu Sheet solo lectura
     const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
 
     async function cargarDatos() {
@@ -38,6 +106,7 @@
 
         const pisos = {};
 
+        // Organizar datos por piso
         rows.forEach(row => {
           const piso = row.c[0]?.v || '';
           const depto = row.c[1]?.v || '';
@@ -76,7 +145,7 @@
         }
       } catch (err) {
         console.error('Error cargando datos', err);
-        document.getElementById('timbre').innerHTML = '<p class="error">Error al cargar datos.</p>';
+        document.getElementById('timbre').innerHTML = '<p>Error al cargar datos.</p>';
       }
     }
 
