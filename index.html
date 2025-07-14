@@ -9,32 +9,24 @@
 </head>
 <body>
   <div class="canvas">
-    <div class="header-row">
+    <div class="header">
       <div class="header-label">Clickeá el depto<br>a comunicarte</div>
       <div class="header-address">Av. Córdoba 5323</div>
     </div>
 
-    <div class="grid-container">
-      <!-- Header row -->
-      <div class="grid-header">
-        <div class="header-text">piso</div>
-      </div>
-      <div class="grid-header">
-        <div class="header-text">
-          <div class="divider"></div>
-          depto
-        </div>
-      </div>
+    <div class="grid-header">
+      <div class="grid-title">piso</div>
+      <div class="grid-divider"></div>
+      <div class="grid-title">depto</div>
+    </div>
 
-      <!-- Dynamic content -->
-      <div id="timbre" class="dynamic-content" style="grid-column: span 2;">
-        <p class="loading">Cargando datos...</p>
-      </div>
+    <div class="grid-container" id="timbre">
+      <p class="loading">Cargando datos...</p>
     </div>
   </div>
 
   <script>
-    const sheetID = "1Nv2h4cniDmn7LRcovyyVNKSfjiEr9lX5OaqqHFq5za0"; // ID de tu Sheet solo lectura
+    const sheetID = "1Nv2h4cniDmn7LRcovyyVNKSfjiEr9lX5OaqqHFq5za0"; // ID de tu Sheet
     const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
 
     async function cargarDatos() {
@@ -67,6 +59,7 @@
 
           const deptoContainer = document.createElement('div');
           deptoContainer.className = 'depto-container';
+
           deptos.forEach(({ depto, celular }) => {
             const mensaje = "*TIMBRE* 👋🏻🛎️\nHola, estoy abajo soy __";
             const encodedMensaje = encodeURIComponent(mensaje);
