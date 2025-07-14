@@ -1,0 +1,115 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #000; /* fondo fuera del canvas */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.canvas {
+  width: 1080px;
+  height: 1920px;
+  background-color: #ffffff;
+  color: #71777a;
+  font-family: 'Lato', sans-serif;
+  box-sizing: border-box;
+  overflow-y: auto; /* scroll interno si se pasa */
+  position: relative;
+  transform-origin: top left;
+  transform: scale(calc(min(100vw / 1080, 100vh / 1920)));
+}
+
+.header-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  padding: 40px;
+}
+
+.header-label {
+  background-color: #71777a;
+  color: #fff;
+  padding: 12px 20px;
+  font-size: 32px;
+  border-radius: 4px;
+  text-align: center;
+  width: fit-content;
+}
+
+.header-address {
+  text-align: right;
+  font-size: 32px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 40px;
+  padding: 40px;
+  align-items: start;
+}
+
+.grid-header {
+  display: contents;
+}
+
+.grid-header .header-text {
+  font-size: 28px;
+  font-weight: bold;
+  text-transform: lowercase;
+  display: flex;
+  align-items: center;
+}
+
+.divider {
+  border-left: 2px solid #71777a;
+  margin: 0 20px;
+  height: 100%;
+}
+
+.floor {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 3px solid #71777a;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  font-size: 32px;
+  font-weight: bold;
+  margin: 20px auto;
+}
+
+.depto-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  align-items: center;
+}
+
+.depto-btn {
+  background-color: #71777a;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 32px;
+  transition: background-color 0.3s ease;
+}
+
+.depto-btn:hover {
+  background-color: #5a5f62;
+}
+
+.loading, .error {
+  font-size: 28px;
+  text-align: center;
+}
