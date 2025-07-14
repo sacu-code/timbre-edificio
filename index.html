@@ -35,20 +35,20 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 5px;
+      margin-bottom: 10px;
     }
 
     header h1 {
-      font-size: 16px; /* ACHICADO */
+      font-size: 18px;
       background-color: #71777a;
       color: #fff;
-      padding: 5px 8px; /* ACHICADO */
+      padding: 5px 8px;
       border-radius: 4px;
       margin: 0;
     }
 
     header p {
-      font-size: 14px; /* ACHICADO */
+      font-size: 14px;
       margin: 0;
     }
 
@@ -56,7 +56,7 @@
       display: grid;
       grid-template-columns: 50px 1fr;
       align-items: center;
-      margin-bottom: 5px;
+      margin-bottom: 10px;
       font-size: 14px;
       font-weight: bold;
       text-transform: lowercase;
@@ -69,7 +69,6 @@
     }
 
     .floors {
-      flex: 1;
       display: grid;
       grid-template-columns: 50px 1fr;
       row-gap: 6px;
@@ -129,7 +128,7 @@
     </div>
 
     <div id="timbre" class="floors">
-      <!-- Los pisos y deptos se cargan dinámicamente -->
+      <!-- Aquí se cargará el contenido dinámico -->
     </div>
   </div>
 
@@ -158,201 +157,7 @@
         });
 
         const contenedor = document.getElementById('timbre');
-        contenedor.innerHTML = '';
-
-        for (const [piso, deptos] of Object.entries(pisos)) {
-          const pisoDiv = document.createElement('div');
-          pisoDiv.className = 'floor';
-          pisoDiv.textContent = piso;
-
-          const deptoContainer = document.createElement('div');
-          deptoContainer.className = 'depto-container';
-
-          deptos.forEach(({ depto, celular }) => {
-            const mensaje = "*TIMBRE* >> Hola estoy abajo, soy __";
-            const encodedMensaje = encodeURIComponent(mensaje);
-            const link = document.createElement('a');
-            link.className = 'depto-btn';
-            link.href = `https://wa.me/${celular}?text=${encodedMensaje}`;
-            link.target = '_blank';
-            link.textContent = depto;
-            deptoContainer.appendChild(link);
-          });
-
-          contenedor.appendChild(pisoDiv);
-          contenedor.appendChild(deptoContainer);
-        }
-      } catch (err) {
-        console.error('Error al cargar datos', err);
-        document.getElementById('timbre').innerHTML = '<p style="color:#f00;">Error al cargar datos.</p>';
-      }
-    }
-
-    cargarDatos();
-  </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Av. Córdoba 5323</title>
-  <!-- Favicon personalizado -->
-  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/1364/1364184.png">
-  <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      background-color: #ffffff;
-      color: #71777a;
-      font-family: 'Lato', sans-serif;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .container {
-      max-width: 1080px;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: start;
-      padding: 10px;
-      box-sizing: border-box;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 5px;
-    }
-
-    header h1 {
-      font-size: 16px; /* ACHICADO */
-      background-color: #71777a;
-      color: #fff;
-      padding: 5px 8px; /* ACHICADO */
-      border-radius: 4px;
-      margin: 0;
-    }
-
-    header p {
-      font-size: 14px; /* ACHICADO */
-      margin: 0;
-    }
-
-    .grid-header {
-      display: grid;
-      grid-template-columns: 50px 1fr;
-      align-items: center;
-      margin-bottom: 5px;
-      font-size: 14px;
-      font-weight: bold;
-      text-transform: lowercase;
-    }
-
-    .grid-header .divider {
-      border-left: 2px solid #71777a;
-      height: 14px;
-      margin: 0 6px;
-    }
-
-    .floors {
-      flex: 1;
-      display: grid;
-      grid-template-columns: 50px 1fr;
-      row-gap: 6px;
-      align-items: center;
-    }
-
-    .floor {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border: 2px solid #71777a;
-      border-radius: 50%;
-      font-size: 12px;
-      width: 35px;
-      height: 35px;
-    }
-
-    .depto-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .depto-btn {
-      background-color: #71777a;
-      color: #fff;
-      border: none;
-      border-radius: 50%;
-      width: 35px;
-      height: 35px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      font-size: 12px;
-      transition: background-color 0.3s ease;
-    }
-
-    .depto-btn:hover {
-      background-color: #5a5f62;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <header>
-      <h1>Clickeá el depto a comunicarte</h1>
-      <p>Av. Córdoba 5323</p>
-    </header>
-
-    <div class="grid-header">
-      <div style="text-align: center;">piso</div>
-      <div style="display: flex; align-items: center;">
-        <div class="divider"></div>
-        depto
-      </div>
-    </div>
-
-    <div id="timbre" class="floors">
-      <!-- Los pisos y deptos se cargan dinámicamente -->
-    </div>
-  </div>
-
-  <script>
-    const sheetID = "1Nv2h4cniDmn7LRcovyyVNKSfjiEr9lX5OaqqHFq5za0"; // ID del Sheet
-    const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
-
-    async function cargarDatos() {
-      try {
-        const response = await fetch(sheetURL);
-        const text = await response.text();
-        const json = JSON.parse(text.substring(47).slice(0, -2));
-        const rows = json.table.rows;
-
-        const pisos = {};
-
-        rows.forEach(row => {
-          const piso = row.c[0]?.v || '';
-          const depto = row.c[1]?.v || '';
-          const celular = row.c[2]?.v || '';
-
-          if (piso && depto && celular) {
-            if (!pisos[piso]) pisos[piso] = [];
-            pisos[piso].push({ depto, celular });
-          }
-        });
-
-        const contenedor = document.getElementById('timbre');
-        contenedor.innerHTML = '';
+        contenedor.innerHTML = ''; // Limpiamos para que no se repita nada
 
         for (const [piso, deptos] of Object.entries(pisos)) {
           const pisoDiv = document.createElement('div');
